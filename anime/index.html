@@ -4,17 +4,35 @@
     <meta charset="utf-8" />
     <title>Toki - Abrir anime</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body { font-family: Arial, sans-serif; margin: 24px; }
+      .hidden { display: none; }
+      .btn { display: inline-block; margin: 8px 8px 0 0; padding: 10px 14px; background: #ffb22c; color: #000; text-decoration: none; border-radius: 8px; }
+    </style>
   </head>
   <body>
-    <p>Abriendo Toki...</p>
+    <p id="status">Abriendo Toki...</p>
+
+    <div id="fallback" class="hidden">
+      <p>No se pudo abrir Toki. Instala la app o vuelve a intentar.</p>
+      <a class="btn" href="https://play.google.com/store/apps/details?id=TU_APP_ID">Instalar en Android</a>
+      <a class="btn" href="https://apps.apple.com/app/idTU_APP_ID">Instalar en iOS</a>
+    </div>
+
     <script>
       const url = new URL(window.location.href);
       const data = url.searchParams.get("data");
+
       if (data) {
-        window.location.href = `toki://anime?data=${encodeURIComponent(data)}`;
+        window.location.href = `toki://anime?data=${data}`;
       } else {
-        document.body.innerHTML = "Falta parametro data";
+        document.getElementById("status").textContent = "Falta parametro data";
       }
+
+      setTimeout(() => {
+        document.getElementById("status").textContent = "Si la app no se abrio, usa el boton de abajo.";
+        document.getElementById("fallback").classList.remove("hidden");
+      }, 1500);
     </script>
   </body>
 </html>
