@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Toki - Abrir anime</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <p>Abriendo Toki...</p>
+    <script>
+      const url = new URL(window.location.href);
+      const data = url.searchParams.get("data");
+      if (data) {
+        window.location.href = `toki://anime?data=${encodeURIComponent(data)}`;
+      } else {
+        document.body.innerHTML = "Falta parametro data";
+      }
+    </script>
+  </body>
+</html>
