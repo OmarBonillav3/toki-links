@@ -147,9 +147,36 @@
       const url = new URL(window.location.href);
       const data = url.searchParams.get("data");
 
-      if (data) {
+      // Esperar a que la imagen cargue antes de redirigir
+      const logoImg = document.querySelector(".logo img");
+      let imageLoaded = false;
+
+      if (logoImg) {
+        logoImg.onload = () => {
+          imageLoaded = true;
+          if (data) {
+            window.location.href = `toki://anime?data=${encodeURIComponent(data)}`;
+          }
+        };
+
+        logoImg.onerror = () => {
+          // Si la imagen falla, redirigir de todas formas
+          if (data) {
+            window.location.href = `toki://anime?data=${encodeURIComponent(data)}`;
+          }
+        };
+
+        // Fallback: redirigir después de 2 segundos si la imagen no carga
+        setTimeout(() => {
+          if (!imageLoaded && data) {
+            window.location.href = `toki://anime?data=${encodeURIComponent(data)}`;
+          }
+        }, 2000);
+      } else if (data) {
         window.location.href = `toki://anime?data=${encodeURIComponent(data)}`;
-      } else {
+      }
+
+      if (!data) {
         document.getElementById("status").textContent =
           "Ups… falta información para abrir este anime.";
       }
