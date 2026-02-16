@@ -2,21 +2,145 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <title>Toki - Abrir anime</title>
+    <title>Toki · Abriendo anime</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <style>
-      body { font-family: Arial, sans-serif; margin: 24px; }
-      .hidden { display: none; }
-      .btn { display: inline-block; margin: 8px 8px 0 0; padding: 10px 14px; background: #ffb22c; color: #000; text-decoration: none; border-radius: 8px; }
+      :root {
+        --primary: #FFB22C;
+        --secondary: #242424;
+        --tertiary: #333333;
+        --text: #A1A1A1;
+        --white: #FFFFFF;
+        --card: rgba(255, 255, 255, 0.04);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--secondary);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Inter, Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 360px;
+        padding: 32px 24px;
+        text-align: center;
+      }
+
+      .logo {
+        width: 96px;
+        height: 96px;
+        margin: 0 auto 24px;
+        border-radius: 24px;
+        background: var(--tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 42px;
+        font-weight: 600;
+        user-select: none;
+      }
+
+      .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 24px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--white);
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .status {
+        margin-top: 12px;
+        font-size: 14px;
+      }
+
+      .fallback {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: none;
+      }
+
+      .fallback p {
+        margin-bottom: 16px;
+        font-size: 13px;
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        background: var(--primary);
+        color: #000;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+      }
     </style>
   </head>
-  <body>
-    <p id="status">Abriendo Toki...</p>
 
-    <div id="fallback" class="hidden">
-      <p>No se pudo abrir Toki. Instala la app o vuelve a intentar.</p>
-      <a class="btn" href="https://play.google.com/store/apps/details?id=TU_APP_ID">Instalar en Android</a>
-      <a class="btn" href="https://apps.apple.com/app/idTU_APP_ID">Instalar en iOS</a>
+  <body>
+    <div class="container">
+      <!-- Placeholder del logo -->
+      <div class="logo"><img src="../img/logo2.png" alt="Toki Logo" /></div>
+
+      <h1>Abriendo Toki</h1>
+      <p>Estamos llevándote directo al anime ✨</p>
+
+      <p id="status" class="status">Un segundo…</p>
+
+      <div id="fallback" class="fallback">
+        <p>
+          Parece que Toki no se abrió.<br />
+          Si no la tienes aún, este es el momento.
+        </p>
+
+        <a
+          class="btn"
+          href="https://play.google.com/store/apps/details?id=com.omarbonilla.TOKI_V3"
+        >
+          Descargar en Android
+        </a>
+
+        <!-- <a
+          class="btn"
+          href="https://apps.apple.com/app/idTU_APP_ID"
+        >
+          Descargar en iOS
+        </a> -->
+      </div>
     </div>
 
     <script>
@@ -24,14 +148,16 @@
       const data = url.searchParams.get("data");
 
       if (data) {
-        window.location.href = `toki://anime?data=${data}`;
+        window.location.href = `toki://anime?data=${encodeURIComponent(data)}`;
       } else {
-        document.getElementById("status").textContent = "Falta parametro data";
+        document.getElementById("status").textContent =
+          "Ups… falta información para abrir este anime.";
       }
 
       setTimeout(() => {
-        document.getElementById("status").textContent = "Si la app no se abrio, usa el boton de abajo.";
-        document.getElementById("fallback").classList.remove("hidden");
+        document.getElementById("status").textContent =
+          "¿Nada pasó? Puedes abrir Toki manualmente 👇";
+        document.getElementById("fallback").style.display = "block";
       }, 1500);
     </script>
   </body>
